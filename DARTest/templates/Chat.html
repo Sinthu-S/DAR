@@ -1,0 +1,158 @@
+<html>
+
+<head>
+<title>DIC ChatBox Beta 1</title>
+<style type="text/css">
+	#signIndiv, #messagediv {
+	margin:0px;
+	margin-bottom:1px;
+}
+#userName {
+	width: 150px;
+	height: 22px;
+	border: 1px teal solid;
+	float:left;
+}
+#signInButt {
+	width: 60px;
+	height: 22px;
+}	
+#signInName{
+	font-family:Tahoma;
+	font-size:12px;
+	color:orange;
+}
+#chatBox {
+	font-family:tahoma;
+	font-size:12px;
+	color:black;
+	border: 1px teal solid;
+	height: 225px;
+	width: 400px;
+	overflow: scroll;
+	float:left;
+
+}
+#usersOnLine{
+	font-family:tahoma;
+	font-size:14;
+	color:orange;
+	border:1px teal solid;
+	width:150px;
+	height:225px;
+	overflow:scroll;
+	margin-left:1px;
+}
+#message {
+	width: 350px;
+	height: 22px;
+	border: 1px teal solid;
+	float:left;
+	margin-top:1px;	
+}
+#send {
+	width: 50px;
+	height: 22px;
+	float:left;
+	margin:1px;
+}
+#serverRes{
+	width:150px;
+	height:22px;
+	border: 1px teal solid;
+	float:left;
+	margin:1px;
+}
+	
+</style>
+</head>
+
+<body>
+
+<h1> Chat Box</h1>
+<div id="deconnexion">
+	<span id="spanUser">  {{nameUser}}</span>
+	<button onclick="stop()">deconnexion </button>
+</div>
+<!-- <div id="deconnexion">
+</div> -->
+
+<div id="chatBox"></div>
+
+<div id="usersOnLine"> </div>
+
+
+
+<div id="messagediv" name="div" >
+	<input id="message" type="text" name="message" value="">
+	<button id="send" onclick="sendMsg()">Send</button>
+</div>
+
+<script type="text/javascript">
+
+var refreshIntervalU = setInterval(lireUser, 1000); 
+var refreshIntervalM = setInterval(lireMsg, 1000); 
+function sendMsg(){
+	var href = "sendMsg?message="+document.getElementById("message").value;
+	var req = new XMLHttpRequest() ;
+    req.onreadystatechange = function() { alertContents(req); };
+    req.open('GET', href, true);
+    req.send(null);
+}
+function lireMsg(){
+    var href = "afficheMsg";
+	var req = new XMLHttpRequest() ;
+    req.onreadystatechange = function() { alertContentsMsg(req); };
+    req.open('GET', href, true);
+    req.send(null);
+}
+
+function lireUser(){
+    var href = "afficheUser";
+	var req = new XMLHttpRequest() ;
+    req.onreadystatechange = function() { alertContents(req); };
+    req.open('GET', href, true);
+    req.send(null);
+}
+	
+	
+function alertContents(requ) {
+    if (requ.readyState == 4) {
+        if (requ.status == 200) {
+            var d = document.getElementById("usersOnLine");
+            d.innerHTML = requ.responseText;
+	    }
+    } 
+}
+
+function alertContentsMsg(requ) {
+    if (requ.readyState == 4) {
+        if (requ.status == 200) {
+            var d = document.getElementById("chatBox");
+            d.innerHTML = requ.responseText;
+	    }
+    } 
+}
+function deco(requ) {
+    if (requ.readyState == 4) {
+        if (requ.status == 200) {
+        	window.location.href = "/"
+	    }
+    } 
+}
+function stop(){
+	var href = "deconnexion?name="+document.getElementById("spanUser").innerHTML;
+	var req = new XMLHttpRequest() ;
+    req.onreadystatechange = function() { deco(req); };
+    req.open('GET', href, true);
+    req.send(null);
+    clearInterval(refreshIntervalU);
+	clearInterval(refreshIntervalM);
+	//window.location.href = "/";
+}
+	
+
+</script>
+
+</body>
+</html>

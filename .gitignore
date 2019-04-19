@@ -1,0 +1,6 @@
+*/target
+*/.settings
+*/bin
+*/META-INF
+*/.*
+.idea

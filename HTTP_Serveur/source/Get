@@ -1,0 +1,3 @@
+/hello3 applications.HelloWorld hello2
+/hello2 applications.HelloWorld hello1
+/hello3/<id>/<p>/ applications.HelloWorld hello3
